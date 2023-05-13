@@ -1,0 +1,17 @@
+{
+  "name": "Easy Reader",
+  "version": "1.0",
+  "manifest_version": 3,
+  "description": "Make reading on the web easier by adjusting text and background color.",
+  "permissions": ["activeTab", "scripting"],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}
