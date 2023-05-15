@@ -1,3 +1,20 @@
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.command === 'enable') {
+    modifyAllTextNodes(document.body);
+    sendResponse({status: true})
+  } else if (request.command === 'disable') {
+    restoreOriginalBody();
+    sendResponse({status: true})
+  }
+  return true;
+})
+
+const originalBody = document.body.cloneNode(true);
+
+function restoreOriginalBody() {
+  document.body.parentNode.replaceChild(originalBody, document.body);
+}
+
 function modifyTextNode(node) {
   const text = node.nodeValue;
   const words = text.split(' ');
@@ -20,7 +37,6 @@ function modifyTextNode(node) {
   // Replace the original text node with the new span element
   node.parentNode.replaceChild(span, node);
 }
-
 function modifyAllTextNodes(node) {
   // Recursively traverse the DOM tree
   if (node.nodeType === Node.TEXT_NODE) {
@@ -29,9 +45,4 @@ function modifyAllTextNodes(node) {
     node.childNodes.forEach(childNode => modifyAllTextNodes(childNode));
   }
 }
-modifyAllTextNodes(document.body);
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   // Call modifyAllTextNodes on the body element to modify all text nodes
-//   modifyAllTextNodes(document.body);
-// });
