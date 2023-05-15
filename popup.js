@@ -1,16 +1,21 @@
 // Get the button element from the popup DOM
-const button = document.getElementById('blacklist-button');
+const enableButton = document.getElementById('enable-button');
+const disableButton = document.getElementById('disable-button');
 
-button.addEventListener('click', function (){
+enableButton.addEventListener('click', function (){
   chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
     // Send a message to the background script to check if the current page is blacklisted
     const activeTab = tabs[0];
-    chrome.tabs.sendMessage(activeTab.id,{ command: 'enable' }, (response) => {
-      if (response.status) {
-        button.textContent = 'enabled';
-      } else {
-        button.textContent = 'enable';
-      }
-    });
+    console.log('activeTab',activeTab)
+    chrome.tabs.sendMessage(activeTab.id,{ command: 'enable'},()=>{});
+  })
+});
+
+disableButton.addEventListener('click', function (){
+  chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
+    // Send a message to the background script to check if the current page is blacklisted
+    const activeTab = tabs[0];
+    console.log('activeTab',activeTab)
+    chrome.tabs.sendMessage(activeTab.id,{ command: 'disable'},()=>{});
   })
 });
